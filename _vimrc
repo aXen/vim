@@ -347,7 +347,7 @@ nnoremap    <F2>    a<C-R>=strftime("%Y-%m-%d %H:%M:%S")<CR><Esc>
 nnoremap    <F3>    <C-]>
 
 " [F4 to toggle the taglist]
-nnoremap    <F4>    :TlistToggle<cr>
+"nnoremap    <F4>    :TlistToggle<cr>
 
 " [Jump to position by the length under cursor]
 nnoremap    <silent><F5> "ly2l:call cursor(0,('0x'.@l)*2+col('.')+2)<cr>
