@@ -343,7 +343,8 @@ nnoremap    _       -
 nnoremap    <F2>    a<C-R>=strftime("%Y-%m-%d %H:%M:%S")<CR><Esc>
 
 " [F3 to start cscope session]
-nnoremap    <F3>    :call SetupCscope()<cr>
+"nnoremap    <F3>    :call SetupCscope()<cr>
+nnoremap    <F3>    <C-]>
 
 " [F4 to toggle the taglist]
 nnoremap    <F4>    :TlistToggle<cr>
