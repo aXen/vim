@@ -416,6 +416,7 @@ command!    EV              tabedit $VIM/_vimrc  " edit vimrc
 command!    EH              tabedit $SYSTEMROOT/system32/drivers/etc/hosts 
 command!    ET              tabedit $W/temp/temp.txt
 "command!    EA              tabedit E:/Apache Software Foundation/Apache2.2/conf/httpd.conf
+" 当前缓冲区所有内容执行外部命令: xxd(一个exe文件)
 command!    HEX             %!xxd
 "command!    -range UniqueLine     <line1>,<line2>call UniqueLine()
 "command!    ASTYLE           !astyle --mode=c --style=ansi --indent=spaces=4 --indent-switches --indent-preprocessor %
