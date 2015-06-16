@@ -38,6 +38,7 @@ set updatetime=500
 set wrap
 
 set history=50	                    " keep 50 lines of command line history
+set autochdir  "自动设当前编辑的文件所在目录为当前工作路径
 "}}}
 
 "{{{ 语法检测设定
@@ -76,6 +77,8 @@ set listchars=tab:?\ ,trail:?       " 指定Tab和结尾空白字符
 " Makefile中需要使用Tab
 autocmd FileType make   set      noexpandtab
 set backspace=eol,start,indent      " 插入模式下使用 <BS>、<Del> <C-W> <C-U>
+set smarttab
+"set listchars=tab:>-  " tab符显示样式
 
 " 行号
 set number                          " 显示行号
@@ -219,14 +222,6 @@ else
 endif
 "}}}
 
-"{{{ tab stop options
-set tabstop=4  " 文件里的 <Tab> 代表的空格数
-set shiftwidth=4  " (自动) 缩进每一步使用的空白数目。用于 |'cindent'|、|>>|、|<<| 等
-set softtabstop=0  " 执行编辑操作，如插入 <Tab> 或者使用 <BS> 时，把 <Tab> 算作空格的数目:
-set expandtab
-set smarttab
-set listchars=tab:>-  " tab符显示样式
-"}}}
 
 "{{{ font
 if has("win32")
