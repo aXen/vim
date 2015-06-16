@@ -1,0 +1,6 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =4
+let g:netrw_dirhist_1='F:/ztesoft/projects/TEP/datamap/src/com/ztesoft/zsmart/oss/provision/ethiopia'
+let g:netrw_dirhist_2='F:/ztesoft/projects/TEP/datamap/src/com/ztesoft/zsmart/oss/provision/ethiopia/cisco'
+let g:netrw_dirhist_3='F:/ztesoft/projects/TEP/datamap/src/com/ztesoft/zsmart/oss/provision/ethiopia'
+let g:netrw_dirhist_4='F:/ztesoft/projects/TEP/datamap/src/com/ztesoft/zsmart/oss/provision/ethiopia/nokiahlr'

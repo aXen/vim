@@ -1,42 +1,148 @@
 " ==================================================
 " Author:         aXen
 " EMail:          BusyAnt@qq.com
-" Blog:           http://blog.busyant.cn
+" Github:         https://github.com/aXen
 " Create Date:    2010-08-13 10:18:58
-" Last Modified:  
-"
+" Last Modified:  2015-06-15 16:42:48
+" References:
+"       1. https://github.com/NsLib/blog-vim-proj
 " ==================================================
 
 
-" [enable vim extensions to vi]
-" This options will reset some options like 'formatoptions"
-" those who will be changed when reloading this file,
-" and when loading the .vimrc,nocompatible is always set
-"set nocompatibleset nocompatible
-
-if v:progname =~? "evim"
-    finish
+"===============================================================================
+" Source User's Own Setting
+"===============================================================================
+"{{{ source
+source $VIM/_vimrc.ba
+source $VIM/_vimrc.local
+if filereadable(expand("~/.vimrc.local"))
+  source ~/.vimrc.local
 endif
+"}}}
+"===============================================================================
+" Vim Settings
+"===============================================================================
+" Vim Settings {{{1
 
-let author='aXen<BusyAnt@qq.com>'
-let email='BusyAnt@qq.com'
-let blog='http://aXen.cnblogs.cn'
-let truename='aXen<BusyAnt@qq.com>'
+"{{{ 基本设置
+set nocompatible                    " 不兼容老得VI，除非有特殊的理由
+set helplang=cn                     " 帮助语言
+let mapleader=","                   " Leader
 
-let $D='~\Desktop'
-let $Doc='~\Documents'
-let $W='F:\'
+" allow backspacing over everything in insert mode
+set backspace=indent,eol,start
+set splitright                      " 窗口的分割会把新窗口放到当前窗口之右。
+set selectmode=""
+set undolevels=1000
+set updatetime=500
+set wrap
 
-" Options: {{{1
-"--------------------------------------------------
-" For Win32 GUI: remove 't' flag from 'guioptions': no tearoff menu entries
-" let &guioptions = substitute(&guioptions, "t", "", "g")
-"
+set history=50	                    " keep 50 lines of command line history
+"}}}
 
-" { behavior }
-" /*--------------------
+"{{{ 语法检测设定
+filetype    on                      " 检测打开文件的类型
+syntax      on                      " 开启语法高亮
+syntax      enable                  " 激活语法高亮
+filetype    plugin on               " 允许特定的文件类型载入插件文件
+filetype    indent on               " 允许特定的文件类型载入缩进文件
+"}}}
 
-" [autocmd]
+"{{{ 存储
+set nobomb                          " 不使用bom编码
+set nobackup                        " 不使用备份文件
+set noswapfile                      " 不产生交换文件
+set autoread                        " 自动同步外部修改
+set autowrite                       " 自动把内容写回文件
+"}}}
+
+"{{{ 缩进/换行/空白/行号/折叠/滚动
+" 缩进
+set autoindent                      " 开启新行时，自动缩进
+set smartindent                     " 开启新行时，智能缩进
+set cindent                         " C程序自动缩进
+
+" 换行
+set lbr                             " 不在单词中间断行
+set fo+=mB                          " 打开断行模块对亚洲语言支持
+set whichwrap+=<,>,h,l              " 命令模式下可以直接移动到下一行或上一行
+
+" 空白
+set shiftwidth=4                    " 缩进空白数
+set tabstop=4                       " Tab所占空格数
+set expandtab                       " 将Tab展开为空格
+set softtabstop=4                   " 配合tabstop
+set listchars=tab:?\ ,trail:?       " 指定Tab和结尾空白字符
+" Makefile中需要使用Tab
+autocmd FileType make   set      noexpandtab
+set backspace=eol,start,indent      " 插入模式下使用 <BS>、<Del> <C-W> <C-U>
+
+" 行号
+set number                          " 显示行号
+set numberwidth=2
+
+" 代码折叠
+set foldenable                      " 开启代码折叠
+set foldmethod=syntax               " 根据语法折叠代码
+
+" Vim折叠
+autocmd FileType vim    setlocal foldmethod=marker
+autocmd FileType vim    setlocal foldmarker={{{,}}}
+"}}}
+
+"{{{ 状态栏/标尺
+set ruler                           " 显示光标所在位置
+set cursorline                      " 高亮当前行
+set showcmd                         " 再屏幕最后一行显示命令
+set laststatus=2                    " 始终显示状态栏
+set cmdheight=1                     " 命令行使用的屏幕行数
+"}}}
+
+"{{{ 搜索和匹配
+set showmatch                       " 高亮显示匹配的括号
+set matchtime=5                     " 匹配括号高亮的时间(单位是十分之一秒)
+set ignorecase                      " 搜索时忽略大小写
+set smartcase                       " 如果搜索模式包含大写字符，不使用'ignorecase'选项
+set hlsearch                        " 高亮被搜索的内容
+set incsearch                       " 增量搜索
+"}}}
+
+"{{{ 主题设置
+set t_Co=256                        " 开启256色支持
+colorscheme molokai
+"}}}
+
+"{{{ 杂项
+set noerrorbells                    " 错误时不发出声响
+set novisualbell                    " 禁用可视响铃
+set t_vb=                           " 可视响铃
+set mouse=a                         " 所有模式下，开启鼠标支持
+set wildmenu                        " 命令行补全以增强模式运行
+set splitright                      " 竖直新分割的窗口在右侧
+set splitbelow                      " 水平新分割的窗口在下面
+" 打开上次编辑位置
+autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+
+set ambiwidth=double
+set completeopt=menuone
+set display=lastline,uhex
+set fillchars=vert:\|,fold:-
+set formatoptions+=Mmn
+set guioptions=egmrt
+set guitablabel=%{tabpagenr()}.%t\ %m
+set laststatus=2
+set linespace=1
+set previewheight=8
+set report=2
+set scroll=8
+set statusline=%f%m\ \[%{&ff}:%{&fenc}:%Y]\ %{getcwd()}%=(%b,0x%B)(%l\/%L\|%c%V)%P%<
+set selection=inclusive
+set virtualedit=block
+set whichwrap+=<,>,[,]
+set winaltkeys=no
+"}}}
+
+"{{{ autocmd
 if has("autocmd")
 
     " Enable file type detection.
@@ -65,9 +171,10 @@ if has("autocmd")
     augroup END
 
 endif " has("autocmd")
+"}}}
 
-" [diff options]
-set diffopt=filler,vertical  " 显示填充行，垂直分割 
+"{{{ diff options
+set diffopt=filler,vertical  " 显示填充行，垂直分割
 
 " Convenient command to see the difference between the current buffer and the
 " file it was loaded from, thus the changes you made.
@@ -76,28 +183,27 @@ if !exists(":DiffOrig")
     command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis
         \ | wincmd p | diffthis
 endif
+"}}}
 
-" [backup]
-if has("vms")
-    set nobackup  " do not keep a backup file, use versions instead
-else
-    set backup  " keep a backup file
-endif
-
-" [mouse]
+"{{{ mouse
 " In many terminal emulators the mouse works just fine, thus enable it.
 if has('mouse')
     set mouse=a  " a：所有模式
     set mousemodel=popup  " 鼠标右键的工作方式，详见鼠标工作方式总览
 endif
+"}}}
 
-" [encoding]
+"{{{ encoding
 if has("win32")
-    set encoding=prc
-    setglobal fenc=utf-8  " 读入文件时，'fileencoding' 会根据 'fileencodings' 进行设置。
-    set langmenu=zh_CN.utf-8  " 本选项必须在载入菜单、打开文件类型检测或语法高亮之前设置。一旦定义了菜单，本选项就不再有效果。
-    set termencoding=prc
-    set fencs=usc-bom,utf-8,prc,gb18030,big5,iso-8859-1
+    "设置编码,解决乱码问题
+    set encoding=utf-8 
+    set langmenu=zh_CN.UTF-8 
+    language message zh_CN.UTF-8
+    source $VIMRUNTIME/delmenu.vim "仅在windows的Gvim使用
+    source $VIMRUNTIME/menu.vim "仅在windows的Gvim使用
+    set fileencodings=utf-8,gb2312,gbk,gb18030
+    set termencoding=utf-8
+
     set fileformat=dos
     set fileformats=dos,unix,mac  " 文件格式，主要是指回车，换行
 elseif has("unix")
@@ -111,98 +217,108 @@ elseif has("unix")
 else
     set encoding=utf-8
 endif
+"}}}
 
-set helplang=cn  " 帮助语言
-
-" allow backspacing over everything in insert mode
-set backspace=indent,eol,start
-set splitright  " 窗口的分割会把新窗口放到当前窗口之右。
-set selectmode=""
-set undolevels=1000
-set updatetime=500
-set wrap
-
-set history=50	" keep 50 lines of command line history
-set ruler		" show the cursor position all the time
-set showcmd		" display incomplete commands
-set incsearch	" do incremental searching
-set nocompatible
-set browsedir="C:\Users\BusyAnt\Desktop"  " 文件浏览器的路径
-
-" --------------------*/
-
-
-" { format }
-" /*--------------------
-
-" [tab stop options]
+"{{{ tab stop options
 set tabstop=4  " 文件里的 <Tab> 代表的空格数
 set shiftwidth=4  " (自动) 缩进每一步使用的空白数目。用于 |'cindent'|、|>>|、|<<| 等
 set softtabstop=0  " 执行编辑操作，如插入 <Tab> 或者使用 <BS> 时，把 <Tab> 算作空格的数目:
 set expandtab
 set smarttab
-
 set listchars=tab:>-  " tab符显示样式
+"}}}
 
-" set autoindent
-" set smartindent
-set ambiwidth=double
-set noautoread
-set completeopt=menuone
-set display=lastline,uhex
-set fillchars=vert:\|,fold:-
-set formatoptions+=Mmn
-set guioptions=egmrt
-set guitablabel=%{tabpagenr()}.%t\ %m
-set ignorecase smartcase  " 模式匹配忽略大小写
-set laststatus=2
-set linespace=1
-set number
-set numberwidth=2
-set previewheight=8
-set report=2
-set scroll=8
-set statusline=%f%m\ \[%{&ff}:%{&fenc}:%Y]\ %{getcwd()}%=(%b,0x%B)(%l\/%L\|%c%V)%P%<
-set selection=inclusive
-set virtualedit=block
-set whichwrap+=<,>,[,]
-set wildmenu
-set winaltkeys=no
-
-" --------------------*/
-
-
-" { display }
-" /*--------------------
-
-" [color]
-"colorscheme evening
-colorscheme molokai
-
-" [font]
+"{{{ font
 if has("win32")
-    set guifontwide=NSimSun:h10.5:i 
-    set guifont=Courier\ New:h10.5:i 
+    "set guifontwide=NSimSun:h10:i
+    set guifontwide=Courier\ New:h10:i
+    set guifont=Courier\ New:h10:i
     "set guifont=Bitstream_Vera_Sans_Mono:i:h10,Fixedsys:h10.5
-    "set guifont=新宋体:h11   
+    "set guifont=新宋体:h11
 elseif has("unix")
     set guifont=Bitstream\ Vera\ Sans\ Mono\ Oblique\ 10.5,Fixedsys\ Excelsior\ 2.00\ 11
     set guifontwide=NSimSun\ 11
 endif
+"}}}
 
-" [highlight]
-" Switch syntax highlighting on, when the terminal has colors
-" Also switch on highlighting the last used search pattern.
-if &t_Co > 2 || has("gui_running")
-    syntax on
-    set hlsearch
-endif
+"}}}
+"===============================================================================
+" Plugins
+"===============================================================================
+" Plugins {{{1
 
-" --------------------*/
+"{{{ nerdtree
+map <m-e> :NERDTreeToggle<CR>
+"}}}
 
+"{{{ neocomplcache
+let g:neocomplcache_enable_at_startup = 1
+"}}}
 
-" Key Maps: {{{1
-"--------------------------------------------------
+"{{{ pathogen
+execute pathogen#infect()
+syntax on
+filetype plugin indent on
+"}}}
+
+"{{{ vim-jsbeautify
+" https://github.com/maksimr/vim-jsbeautify.git
+map <c-f> :call JsBeautify()<cr>
+" or
+autocmd FileType javascript     noremap     <buffer>    <c-f> :call JsBeautify()<cr>
+" for html
+autocmd FileType html           noremap     <buffer>    <c-f> :call HtmlBeautify()<cr>
+" for css or scss
+autocmd FileType css            noremap     <buffer>    <c-f> :call CSSBeautify()<cr>
+autocmd FileType javascript     vnoremap    <buffer>    <c-f> :call RangeJsBeautify()<cr>
+autocmd FileType html           vnoremap    <buffer>    <c-f> :call RangeHtmlBeautify()<cr>
+autocmd FileType css            vnoremap    <buffer>    <c-f> :call RangeCSSBeautify()<cr>
+"}}}
+
+"{{{ Tagbar
+nmap <F8> :TagbarToggle<CR>
+"}}}
+
+"{{{ AutoComplete
+" ref: http://easwy.com/blog/archives/advanced-vim-skills-omin-complete/
+set completeopt=longest,menu
+" mapping
+inoremap <expr> <CR>       pumvisible()?"\<C-Y>":"\<CR>"
+inoremap <expr> <C-J>      pumvisible()?"\<PageDown>\<C-N>\<C-P>":"\<C-X><C-O>"
+inoremap <expr> <C-K>      pumvisible()?"\<PageUp>\<C-P>\<C-N>":"\<C-K>"
+inoremap <expr> <C-U>      pumvisible()?"\<C-E>":"\<C-U>"
+"}}}
+
+"}}}
+"===============================================================================
+" Key Binding
+"===============================================================================
+" Key Binding {{{1
+
+" vim 开发
+nnoremap    <Leader>sv                 :source $MYVIMRC<cr>        " 刷新vim配置
+nnoremap    <Leader>ev                 :vsplit $MYVIMRC<cr>        " 分割窗口打开vim配置
+" 用空格键开关折叠
+nnoremap <silent> <space> @=((foldclosed(line('.')) < 0 ) ? 'zc':'zo')<CR>
+
+" 编辑相关
+"inoremap    jk                  <esc>           " 编辑模式下按jk等价于按ESC键, 非常高效
+"nnoremap    Q                   :q<CR>          " 命令模式下，输入Q，退出Vim
+
+" 窗口间移动
+nnoremap    <C-j>               <C-W>j
+nnoremap    <C-k>               <C-W>k
+nnoremap    <C-h>               <C-W>h
+nnoremap    <C-l>               <C-W>l
+
+" 插入模式下移动光标
+inoremap    <C-y>               <Up>            " 输入模式下，按Ctrl+y移动光标到上一行
+inoremap    <C-e>               <Down>          " 输入模式下，按Ctrl+e移动光标到下一行
+inoremap    <c-h>               <left>
+inoremap    <c-l>               <right>
+inoremap    <c-j>               <c-o>gj
+inoremap    <c-k>               <c-o>gk
+
 
 " [Copy and cut in visual mode; Paste in insert mode]
 inoremap    <C-V>   <C-R>+
@@ -236,8 +352,8 @@ xnoremap    <C-A>   <C-C>ggVG
 nnoremap    <c-_>   :bnext<cr>
 
 " [Switch tab pages]
-nnoremap    <c-h>   gT
-nnoremap    <c-l>   gt
+"nnoremap    <c-h>   gT
+"nnoremap    <c-l>   gt
 
 " [CTRL-Tab is Next window]
 " noremap     <C-Tab> <C-W>w  " 切换当前界面的窗口
@@ -252,27 +368,13 @@ inoremap    <C-F4>  <C-O><C-W>c
 cnoremap    <C-F4>  <C-C><C-W>c
 onoremap    <C-F4>  <C-C><C-W>c
 
-" [Scroll]
-nnoremap    <c-j>   <c-e>
-nnoremap    <c-k>   <c-y>
-
 " [Scroll up and down in Quickfix]
-nnoremap    <c-n>   :cn<cr>
-nnoremap    <c-b>   :cp<cr>
-
-" [Cscope hot keys]
-"nnoremap    gnc     :cs find c <c-r>=expand("<cword>")<cr><cr>
-"nnoremap    gnd     :cs find d <c-r>=expand("<cword>")<cr><cr>
-"nnoremap    gne     :cs find e <c-r>=expand("<cword>")<cr><cr>
-"nnoremap    gnf     :cs find f <c-r>=expand("<cfile>")<cr><cr>
-"nnoremap    gng     :cs find g <c-r>=expand("<cword>")<cr><cr>
-"nnoremap    gni     :cs find i ^<c-r>=expand("<cfile>")<cr>$<cr>
-"nnoremap    gns     :cs find s <c-r>=expand("<cword>")<cr><cr>
-"nnoremap    gnt     :cs find t <c-r>=expand("<cword>")<cr><cr>
+"nnoremap    <c-n>   :cn<cr>
+"nnoremap    <c-b>   :cp<cr>
 
 " [Preview and switch tags]
-nnoremap    <space> <c-w>}
-nnoremap    <m-space> <c-w>g}
+"nnoremap    <space> <c-w>}
+"nnoremap    <m-space> <c-w>g}
 nnoremap    <m-]>   :tn<cr>
 nnoremap    <m-[>   :tp<cr>
 
@@ -313,13 +415,12 @@ xnoremap    >       >gv
 cnoremap    <m-i>   <c-r>=tolower(substitute(getline('.')[(col('.')-1):],'\W.*','','g'))<cr>
 
 " [Quick write and quit]
-" nnoremap    <m-w>   :write<cr>
-nnoremap    <m-q>   :quit<cr>
+nnoremap    <m-q>   :quit!<cr>
 
 " [copy paste word]
-nnoremap    <m-w>   "*yw
-nnoremap    <m-y>   "+yy
-nnoremap    <m-p>   "*p
+"nnoremap    <m-w>   "*yw
+"nnoremap    <m-y>   "+yy
+"nnoremap    <m-p>   "*p
 
 " [Diff mode maps]
 nnoremap    du      :diffupdate<cr>
@@ -338,23 +439,19 @@ nnoremap    gJ      J
 nnoremap    -       _
 nnoremap    _       -
 
-" [F2 to toggle the winmanager]
-"nnoremap    <F2>    :WMToggle<cr>
+" [F2 to insert current timestamp]
 nnoremap    <F2>    a<C-R>=strftime("%Y-%m-%d %H:%M:%S")<CR><Esc>
+inoremap    <F2>    a<C-R>=strftime("%Y-%m-%d %H:%M:%S")<CR><Esc>
 
 " [F3 to start cscope session]
-"nnoremap    <F3>    :call SetupCscope()<cr>
 nnoremap    <F3>    <C-]>
-
-" [F4 to toggle the taglist]
-"nnoremap    <F4>    :TlistToggle<cr>
 
 " [Jump to position by the length under cursor]
 nnoremap    <silent><F5> "ly2l:call cursor(0,('0x'.@l)*2+col('.')+2)<cr>
 nnoremap    <silent><S-F5> "ly4l:call cursor(0,('0x'.@l)*2+col('.')+4)<cr>
 
 " Don't use Ex mode, use Q for formatting
-map Q gq
+"map Q gq
 
 " CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break undo,
 " so that you can undo CTRL-U after inserting a line break.
@@ -367,6 +464,7 @@ nnoremap    <F12>   I/*<ESC>A*/<ESC>
 " imap        ::      <Esc>:
 " [to normal mode]
 "inoremap    kj      <ESC>
+inoremap    ,,    <ESC>
 
 "inoremap    <C-S-L> <ESC>"+yy
 
@@ -382,21 +480,16 @@ nnoremap    <F12>   I/*<ESC>A*/<ESC>
 " 最大化或还原
 nnoremap <F11> :simalt ~x \| simalt ~r<cr>
 
-" Abbreviations: [no use when using code_complete plugin] {{{1
-"--------------------------------------------------
+"}}}
+"===============================================================================
+" Abbreviations
+"===============================================================================
+" Abbreviations: {{{1
+
 iabbrev     //a     /** */<left><left><left>
 iabbrev     //b     /* */<left><left><left>
 iabbrev     //c     /*======== ========*/<esc>10<left>i
 iabbrev     //d     -- ===========================<CR>--<CR>-- ===========================<UP>
-
-"iabbrev     #f      #ifndef  <C-R>=GetFileName()<cr><cr>#define  <C-R>
-"                    \=GetFileName()<cr><cr><cr><cr><cr>#endif  /*<C-R>
-"                    \=GetFileName()<cr>*/<esc>
-"iabbrev     #d      #define<C-R>=Eatchar('\s')<cr>
-"iabbrev     #i      #include<C-R>=Eatchar('\s')<cr>
-"iabbrev     xtime   <C-R>=strftime("%Y-%m-%d %H:%M:%S")<cr><C-R>=Eatchar('\s')<cr>
-"iabbrev     if(     if(<Esc>mxa)<cr>{<cr>}<Esc>`xa<C-R>=Eatchar('\s')<cr>
-"iabbrev     for(    for(<Esc>mxa)<cr>{<cr>}<Esc>`xa<C-R>=Eatchar('\s')<cr>
 
 iabbrev     :s      SELECT * FROM;<LEFT>
 iabbrev     :u      UPDATE SET;<LEFT><LEFT><LEFT><LEFT><LEFT>
@@ -404,27 +497,24 @@ iabbrev     :d      DELETE FROM;<LEFT>
 iabbrev     :t      TRUNCATE TABLE;<LEFT>
 iabbrev     :i      INSERT INTOVALUES();<LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT>
 
+"}}}
+"===============================================================================
+" Commands
+"===============================================================================
 " Commands: {{{1
 "--------------------------------------------------
-"command!    ToggleSketch     call ToggleSketch()
-"command!    AddHeader        call AddHeader()
-"command!    Dox              call DoxFunctionComment()
-"command!    RemoveComments   %s/\/\*\_.\{-}\*\///g
 "command!    CPPtags          !ctags -R --c++-kinds=+p --c-kinds=+p --fields=+iaS --extra=+q .
-"command!    VIMRC            tabedit $VIMRUNTIME/../_vimrc
 command!    EV              tabedit $VIM/_vimrc  " edit vimrc
-command!    EH              tabedit $SYSTEMROOT/system32/drivers/etc/hosts 
+command!    EH              tabedit $SYSTEMROOT/system32/drivers/etc/hosts
 command!    ET              tabedit $W/temp/temp.txt
-"command!    EA              tabedit E:/Apache Software Foundation/Apache2.2/conf/httpd.conf
-" 当前缓冲区所有内容执行外部命令: xxd(一个exe文件)
+command!    EO              tabedit $ORACLE/NETWORK/ADMIN/tnsnames.ora
+command!    EA              tabedit $APACHE/conf/httpd.conf
 command!    HEX             %!xxd
-"command!    -range UniqueLine     <line1>,<line2>call UniqueLine()
-"command!    ASTYLE           !astyle --mode=c --style=ansi --indent=spaces=4 --indent-switches --indent-preprocessor %
-"command!    -range=% Uniq3          <line1>,<line2>g/^\%<<line2>l\(.*\)\n\1$/d
-"command!    -range=% -nargs=? Nl    <line1>,<line2>s/^/\=printf("%"."<args>"."d ",line(".")-<line1> + 1)/
-"command!    DiffOrig         vert new | set bt=nofile | r # | 0d_ | diffthis | wincmd p | diffthis
 
-
+"}}}
+"===============================================================================
+" Menus
+"===============================================================================
 " Menus: {{{1
 "--------------------------------------------------
 "menu        &Misc.Add\ Header                     :AddHeader<cr>
@@ -450,9 +540,13 @@ menu        &Misc.Convert.ScreenShot              :ScreenShot<cr>
 menu        &Misc.Convert.Text\ to\ HTML          :Text2Html<cr>
 menu        &Misc.Convert.Diff\ to\ HTML          :Diff2Html<cr>
 
+"}}}
+"===============================================================================
+" Extend Functions
+"===============================================================================
 " Extend Function: {{{1
 "--------------------------------------------------
-
+command!    AddHeader        call AddHeader()
 " [AddHeader() add a header to the top of the file]
 function! AddHeader()
     let headerstr=[]
@@ -577,6 +671,7 @@ endfunction
 "    return (c =~ a:pat) ? '' : c
 "endfunction
 
+command!    -range UniqueLine     <line1>,<line2>call UniqueLine()
 " [Let the same line combine together]
 function! UniqueLine() range
     let l1 = a:firstline
@@ -626,6 +721,7 @@ fun! DoAutoComplete()
         let letter = letter + 1
     endwhile
 endfun
+
 fun! StopAutoComplete()
     let letter = char2nr("a")
     while letter <= char2nr("z")
@@ -639,5 +735,22 @@ fun! StopAutoComplete()
     endwhile
 endfun
 
+"{{{ whitespace  去除文件的行尾空白
+function! WhitespaceStripTrailing()
+    let previous_search=@/
+    let previous_cursor_line=line('.')
+    let previous_cursor_column=col('.')
+    %s/\s\+$//e
+    let @/=previous_search
+    call cursor(previous_cursor_line, previous_cursor_column)
+endfunction
 
+autocmd BufWritePre     *.py        call WhitespaceStripTrailing()
+autocmd BufWritePre     *.h         call WhitespaceStripTrailing()
+autocmd BufWritePre     *.c         call WhitespaceStripTrailing()
+autocmd BufWritePre     *.cpp       call WhitespaceStripTrailing()
+autocmd BufWritePre     *.js        call WhitespaceStripTrailing()
+"}}}
+
+"}}}
 

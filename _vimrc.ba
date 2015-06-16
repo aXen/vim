@@ -1,0 +1,8 @@
+let $D='~\Desktop'
+let $Doc='~\Documents'
+let $W='F:\'
+let $NODE='F:\nodejs\pg'
+let $ORACLE='E:/Oracle/product/11.2.0/dbhome_1'
+let $APACHE='E:/Oracle/product/11.2.0/dbhome_1'
+
+"set browsedir='~\Desktop'                    " 文件浏览器的路径
